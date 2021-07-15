@@ -43,18 +43,18 @@ export default class ReadMoreEditing extends Plugin {
 
 		conversion.for( 'dataDowncast' ).elementToElement( {
 			model: 'readMore',
-			view: ( modelElement, viewWriter ) => {
-				const divElement = viewWriter.createContainerElement( 'div', {
+			view: ( modelElement, { writer } ) => {
+				const divElement = writer.createContainerElement( 'div', {
 					class: 'readmore'
 				} );
 
 				// For a rationale of using span inside a div see:
 				// https://github.com/ckeditor/ckeditor5-readmore/pull/1#discussion_r328934062.
-				const spanElement = viewWriter.createContainerElement( 'span', {
+				const spanElement = writer.createContainerElement( 'span', {
 					style: 'display: none'
 				} );
 
-				viewWriter.insert( viewWriter.createPositionAt( divElement, 0 ), spanElement );
+				writer.insert( writer.createPositionAt( divElement, 0 ), spanElement );
 
 				return divElement;
 			}
@@ -62,27 +62,27 @@ export default class ReadMoreEditing extends Plugin {
 
 		conversion.for( 'editingDowncast' ).elementToElement( {
 			model: 'readMore',
-			view: ( modelElement, viewWriter ) => {
+			view: ( modelElement, { writer } ) => {
 				const label = t( 'Read more' );
-				const viewWrapper = viewWriter.createContainerElement( 'div' );
-				const viewLabelElement = viewWriter.createContainerElement( 'span' );
-				const innerText = viewWriter.createText( t( 'Read more' ) );
+				const viewWrapper = writer.createContainerElement( 'div' );
+				const viewLabelElement = writer.createContainerElement( 'span' );
+				const innerText = writer.createText( t( 'Read more' ) );
 
-				viewWriter.addClass( 'readmore', viewWrapper );
-				viewWriter.setCustomProperty( 'readMore', true, viewWrapper );
+				writer.addClass( 'readmore', viewWrapper );
+				writer.setCustomProperty( 'readMore', true, viewWrapper );
 
-				viewWriter.addClass( 'readmore__label', viewLabelElement );
+				writer.addClass( 'readmore__label', viewLabelElement );
 
-				viewWriter.insert( viewWriter.createPositionAt( viewWrapper, 0 ), viewLabelElement );
-				viewWriter.insert( viewWriter.createPositionAt( viewLabelElement, 0 ), innerText );
+				writer.insert( writer.createPositionAt( viewWrapper, 0 ), viewLabelElement );
+				writer.insert( writer.createPositionAt( viewLabelElement, 0 ), innerText );
 
-				return toReadMoreWidget( viewWrapper, viewWriter, label );
+				return toReadMoreWidget( viewWrapper, writer, label );
 			}
 		} );
 
 		conversion.for( 'upcast' )
 			.elementToElement( {
-				view: element => {
+				view: { name: 'div' },/*element => {
 					// The "page break" div must have specified value for the 'readmore-after' definition and single child only.
 					if ( !element.is( 'div' ) || !element.hasClass( 'readmore' ) || element.childCount != 1 ) {
 						return;
@@ -95,13 +95,14 @@ export default class ReadMoreEditing extends Plugin {
 						return;
 					}
 
+					viewSpan.setStyle('display', 'inline')
 					const text = first( viewSpan.getChildren() );
 
 					if ( !text.is( 'text' ) || ( text.data !== ' ' && text.data !== '&nbsp;' ) ) {
 						return;
 					}
-					return { name: true };
-				},
+					return { name: 'div' };
+				},*/
 				model: 'readMore'
 			} );
 
