@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -7,24 +7,16 @@
  * @module list
  */
 
-import List from './list';
-import ListEditing from './listediting';
-import ListUI from './listui';
-import ListStyle from './liststyle';
-import ListStyleEditing from './liststyleediting';
-import ListStyleUI from './liststyleui';
-import TodoList from './todolist';
-import TodoListEditing from './todolistediting';
-import TodoListUI from './todolistui';
-
-export default {
-	List,
-	ListEditing,
-	ListUI,
-	ListStyle,
-	ListStyleEditing,
-	ListStyleUI,
-	TodoList,
-	TodoListEditing,
-	TodoListUI
-};
+export { default as DocumentList } from './documentlist';
+export { default as DocumentListEditing } from './documentlist/documentlistediting';
+export { default as DocumentListProperties } from './documentlistproperties';
+export { default as DocumentListPropertiesEditing } from './documentlistproperties/documentlistpropertiesediting';
+export { default as List } from './list';
+export { default as ListEditing } from './list/listediting';
+export { default as ListUI } from './list/listui';
+export { default as ListProperties } from './listproperties';
+export { default as ListPropertiesEditing } from './listproperties/listpropertiesediting';
+export { default as ListPropertiesUI } from './listproperties/listpropertiesui';
+export { default as TodoList } from './todolist';
+export { default as TodoListEditing } from './todolist/todolistediting';
+export { default as TodoListUI } from './todolist/todolistui';

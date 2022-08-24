@@ -8,7 +8,7 @@
  */
 
 import Command from '@ckeditor/ckeditor5-core/src/command';
-import { findOptimalInsertionPosition } from '@ckeditor/ckeditor5-widget/src/utils';
+import { findOptimalInsertionRange } from '@ckeditor/ckeditor5-widget/src/utils';
 
 /**
  * The page break command.
@@ -103,9 +103,9 @@ function checkSelectionOnObject( selection, schema ) {
 // @param {module:engine/model/model~Model} model Model instance.
 // @returns {module:engine/model/element~Element}
 function getInsertReadMoreParent( selection, model ) {
-	const insertAt = findOptimalInsertionPosition( selection, model );
+	const insertAt = findOptimalInsertionRange( selection, model );
 
-	const parent = insertAt.parent;
+	const parent = insertAt.start.parent;
 
 	if ( parent.isEmpty && !parent.is( '$root' ) ) {
 		return parent.parent;

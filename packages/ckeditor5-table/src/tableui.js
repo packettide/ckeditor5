@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -8,7 +8,7 @@
  */
 
 import { Plugin } from 'ckeditor5/src/core';
-import { addListToDropdown, createDropdown, Model, SplitButtonView } from 'ckeditor5/src/ui';
+import { addListToDropdown, createDropdown, Model, SplitButtonView, SwitchButtonView } from 'ckeditor5/src/ui';
 import { Collection } from 'ckeditor5/src/utils';
 
 import InsertTableView from './ui/inserttableview';
@@ -256,7 +256,11 @@ export default class TableUI extends Plugin {
 
 		this.listenTo( dropdownView, 'execute', evt => {
 			editor.execute( evt.source.commandName );
-			editor.editing.view.focus();
+
+			// Toggling a switch button view should not move the focus to the editable.
+			if ( !( evt.source instanceof SwitchButtonView ) ) {
+				editor.editing.view.focus();
+			}
 		} );
 
 		return dropdownView;
@@ -278,13 +282,22 @@ export default class TableUI extends Plugin {
 		const dropdownView = createDropdown( locale, SplitButtonView );
 		const mergeCommandName = 'mergeTableCells';
 
-		this._fillDropdownWithListOptions( dropdownView, options );
+		// Main command.
+		const mergeCommand = editor.commands.get( mergeCommandName );
+
+		// Subcommands in the dropdown.
+		const commands = this._fillDropdownWithListOptions( dropdownView, options );
 
 		dropdownView.buttonView.set( {
 			label,
 			icon,
 			tooltip: true,
 			isEnabled: true
+		} );
+
+		// Make dropdown button disabled when all options are disabled together with the main command.
+		dropdownView.bind( 'isEnabled' ).toMany( [ mergeCommand, ...commands ], 'isEnabled', ( ...areEnabled ) => {
+			return areEnabled.some( isEnabled => isEnabled );
 		} );
 
 		// Merge selected table cells when the main part of the split button is clicked.

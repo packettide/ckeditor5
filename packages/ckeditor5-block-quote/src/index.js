@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -7,12 +7,6 @@
  * @module block-quote
  */
 
-import BlockQuote from './blockquote';
-import BlockQuoteEditing from './blockquoteediting';
-import BlockQuoteUI from './blockquoteui';
-
-export default {
-	BlockQuote,
-	BlockQuoteEditing,
-	BlockQuoteUI
-};
+export { default as BlockQuote } from './blockquote';
+export { default as BlockQuoteEditing } from './blockquoteediting';
+export { default as BlockQuoteUI } from './blockquoteui';

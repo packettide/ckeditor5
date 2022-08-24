@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -7,14 +7,7 @@
  * @module indent
  */
 
-import Indent from './indent';
-import IndentEditing from './indentediting';
-import IndentUI from './indentui';
-import IndentBlock from './indentblock';
-
-export default {
-	Indent,
-	IndentEditing,
-	IndentUI,
-	IndentBlock
-};
+export { default as Indent } from './indent';
+export { default as IndentEditing } from './indentediting';
+export { default as IndentUI } from './indentui';
+export { default as IndentBlock } from './indentblock';

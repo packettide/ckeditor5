@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -193,9 +193,17 @@ describe( 'TableUI', () => {
 		it( 'should focus view after command execution', () => {
 			const focusSpy = testUtils.sinon.spy( editor.editing.view, 'focus' );
 
-			dropdown.listView.items.first.children.first.fire( 'execute' );
+			dropdown.listView.items.get( 2 ).children.last.fire( 'execute' );
 
 			sinon.assert.calledOnce( focusSpy );
+		} );
+
+		it( 'should not focus view after using a switchbutton', () => {
+			const focusSpy = testUtils.sinon.spy( editor.editing.view, 'focus' );
+
+			dropdown.listView.items.first.children.last.fire( 'execute' );
+
+			sinon.assert.notCalled( focusSpy );
 		} );
 
 		it( 'executes command when it\'s executed', () => {
@@ -330,9 +338,17 @@ describe( 'TableUI', () => {
 		it( 'should focus view after command execution', () => {
 			const focusSpy = testUtils.sinon.spy( editor.editing.view, 'focus' );
 
-			dropdown.listView.items.first.children.first.fire( 'execute' );
+			dropdown.listView.items.get( 2 ).children.first.fire( 'execute' );
 
 			sinon.assert.calledOnce( focusSpy );
+		} );
+
+		it( 'should not focus view after using a switchbutton', () => {
+			const focusSpy = testUtils.sinon.spy( editor.editing.view, 'focus' );
+
+			dropdown.listView.items.first.children.last.fire( 'execute' );
+
+			sinon.assert.notCalled( focusSpy );
 		} );
 
 		it( 'executes command when it\'s executed', () => {
@@ -386,11 +402,28 @@ describe( 'TableUI', () => {
 			expect( dropdown.buttonView ).to.be.instanceOf( SplitButtonView );
 		} );
 
-		it( 'should have #isEnabled always true regardless of the "mergeTableCells" command state', () => {
-			command.isEnabled = false;
+		it( 'should be disabled if all of the merge commands are disabled, along with the main merge command', () => {
+			[
+				'mergeTableCells',
+				'mergeTableCellUp',
+				'mergeTableCellRight',
+				'mergeTableCellDown',
+				'mergeTableCellLeft',
+				'splitTableCellVertically',
+				'splitTableCellHorizontally'
+			].forEach( command => {
+				editor.commands.get( command ).isEnabled = false;
+			} );
+
+			expect( dropdown.isEnabled ).to.be.false;
+
+			editor.commands.get( 'mergeTableCellLeft' ).isEnabled = true;
+
 			expect( dropdown.isEnabled ).to.be.true;
 
+			editor.commands.get( 'mergeTableCellLeft' ).isEnabled = false;
 			command.isEnabled = true;
+
 			expect( dropdown.isEnabled ).to.be.true;
 		} );
 
@@ -401,14 +434,6 @@ describe( 'TableUI', () => {
 
 			sinon.assert.calledOnce( spy );
 			sinon.assert.calledWithExactly( spy, 'mergeTableCells' );
-		} );
-
-		it( 'should have the dropdown part of the split button always enabled no matter the "mergeTableCells" command state', () => {
-			command.isEnabled = true;
-			expect( dropdown.buttonView.arrowView.isEnabled ).to.be.true;
-
-			command.isEnabled = false;
-			expect( dropdown.buttonView.arrowView.isEnabled ).to.be.true;
 		} );
 
 		it( 'should have proper items in panel', () => {

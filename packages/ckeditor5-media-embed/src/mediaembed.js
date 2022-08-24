@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -242,7 +242,7 @@ export default class MediaEmbed extends Plugin {
  * This is not relevant if {@link module:media-embed/mediaembed~MediaEmbedConfig#previewsInData `config.mediaEmbed.previewsInData`}
  * is set to `true`.
  *
- * When unset, the feature produces tag `<oembed>`:
+ * When not set, the feature produces the `<oembed>` tag:
  *
  *		<figure class="media">
  *			<oembed url="https://url"></oembed>
@@ -254,7 +254,7 @@ export default class MediaEmbed extends Plugin {
  *			elementName: 'o-embed'
  *		}
  *
- * This will produce semantic data with `<o-embed>` tag:
+ * This will produce semantic data with the `<o-embed>` tag:
  *
  *		<figure class="media">
  *			<o-embed url="https://url"></o-embed>

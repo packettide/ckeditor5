@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -7,12 +7,6 @@
  * @module highlight
  */
 
-import Highlight from './highlight';
-import HighlightEditing from './highlightediting';
-import HighlightUI from './highlightui';
-
-export default {
-	Highlight,
-	HighlightEditing,
-	HighlightUI
-};
+export { default as Highlight } from './highlight';
+export { default as HighlightEditing } from './highlightediting';
+export { default as HighlightUI } from './highlightui';

@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -82,7 +82,7 @@ async function reloadEditor( config = {} ) {
 			'undo', 'redo', '|', 'htmlEmbed', 'mediaEmbed'
 		],
 		image: {
-			toolbar: [ 'imageStyle:full', 'imageStyle:side', '|', 'imageTextAlternative' ]
+			toolbar: [ 'imageStyle:block', 'imageStyle:side', '|', 'imageTextAlternative' ]
 		}
 	};
 
@@ -101,10 +101,15 @@ function getSanitizeHtmlConfig( defaultConfig ) {
 		'video',
 		'picture',
 		'source',
-		'img'
+		'img',
+
+		// Allows embedding scripts.
+		'script'
 	);
 
 	config.selfClosing.push( 'source' );
+
+	config.allowVulnerableTags = true;
 
 	// Remove duplicates.
 	config.allowedTags = [ ...new Set( config.allowedTags ) ];

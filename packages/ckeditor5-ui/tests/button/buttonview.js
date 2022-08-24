@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -261,6 +261,12 @@ describe( 'ButtonView', () => {
 				expect( view.element.attributes[ 'aria-disabled' ].value ).to.equal( 'true' );
 			} );
 
+			it( '-pressed has correct default value for toggleable button', () => {
+				view.isToggleable = true;
+				view.isOn = undefined;
+				expect( view.element.attributes[ 'aria-pressed' ].value ).to.equal( 'false' );
+			} );
+
 			it( '-pressed reacts to #isOn', () => {
 				view.isToggleable = true;
 				view.isOn = true;
@@ -280,10 +286,38 @@ describe( 'ButtonView', () => {
 		} );
 
 		describe( 'mousedown event', () => {
-			it( 'should be prevented', () => {
+			it( 'should not be prevented', () => {
 				const ret = view.element.dispatchEvent( new Event( 'mousedown', { cancelable: true } ) );
 
-				expect( ret ).to.false;
+				expect( ret ).to.true;
+			} );
+
+			describe( 'in Safari', () => {
+				let view, stub;
+
+				beforeEach( () => {
+					stub = testUtils.sinon.stub( env, 'isSafari' ).value( true );
+					view = new ButtonView( locale );
+					view.render();
+				} );
+
+				afterEach( () => {
+					stub.resetBehavior();
+					view.destroy();
+				} );
+
+				it( 'the button is focused', () => {
+					const spy = sinon.spy( view.element, 'focus' );
+					view.element.dispatchEvent( new Event( 'mousedown', { cancelable: true } ) );
+
+					expect( spy.callCount ).to.equal( 1 );
+				} );
+
+				it( 'the event is prevented', () => {
+					const ret = view.element.dispatchEvent( new Event( 'mousedown', { cancelable: true } ) );
+
+					expect( ret ).to.false;
+				} );
 			} );
 		} );
 
@@ -343,7 +377,7 @@ describe( 'ButtonView', () => {
 	} );
 
 	describe( '#keystrokeView', () => {
-		it( 'is omited in #children when view#icon is not defined', () => {
+		it( 'is omitted in #children when view#withKeystroke is not set', () => {
 			view = new ButtonView( locale );
 			view.render();
 
@@ -369,7 +403,17 @@ describe( 'ButtonView', () => {
 			expect( view.keystrokeView.element.textContent ).to.equal( 'Ctrl+A' );
 		} );
 
-		it( 'usese fancy kesytroke preview on Mac', () => {
+		it( 'is omitted in #children when view#keystroke is not defined', () => {
+			// (#9412)
+			view = new ButtonView( locale );
+			view.withKeystroke = true;
+			view.render();
+
+			expect( view.element.childNodes ).to.have.length( 2 );
+			expect( view.keystrokeView.element ).to.be.null;
+		} );
+
+		it( 'usese fancy keystroke preview on Mac', () => {
 			testUtils.sinon.stub( env, 'isMac' ).value( true );
 
 			view = new ButtonView( locale );

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -72,6 +72,7 @@
 		/* Place the drag handler outside the widget wrapper. */
 		transform: translateY(-100%);
 		left: calc(0px - var(--ck-widget-outline-thickness));
+		top: 0;
 
 		& .ck-icon {
 			/* Make sure the dimensions of the icon are independent of the fon-size of the content. */

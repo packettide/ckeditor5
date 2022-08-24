@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -44,11 +44,13 @@ describe( 'ToolbarView', () => {
 		locale = new Locale();
 		view = new ToolbarView( locale );
 		view.render();
+		document.body.appendChild( view.element );
 	} );
 
 	afterEach( () => {
 		sinon.restore();
 		view.destroy();
+		view.element.remove();
 	} );
 
 	describe( 'constructor()', () => {
@@ -361,6 +363,55 @@ describe( 'ToolbarView', () => {
 			} );
 		} );
 
+		describe( 'activates keyboard navigation for the RTL toolbar', () => {
+			beforeEach( () => {
+				view.destroy();
+				view.element.remove();
+
+				locale = new Locale( { uiLanguage: 'ar' } );
+
+				view = new ToolbarView( locale );
+				view.render();
+				document.body.appendChild( view.element );
+			} );
+
+			afterEach( () => {
+				view.element.remove();
+			} );
+
+			it( 'so "arrowleft" focuses next focusable item', () => {
+				const keyEvtData = getArrowKeyData( 'arrowleft' );
+
+				view.items.add( focusable() );
+				view.items.add( nonFocusable() );
+				view.items.add( focusable() );
+				view.items.add( focusable() );
+
+				// Mock the first item is focused.
+				view.focusTracker.isFocused = true;
+				view.focusTracker.focusedElement = view.items.get( 0 ).element;
+
+				view.keystrokes.press( keyEvtData );
+				sinon.assert.calledOnce( view.items.get( 2 ).focus );
+			} );
+
+			it( 'so "arrowright" focuses previous focusable item', () => {
+				const keyEvtData = getArrowKeyData( 'arrowright' );
+
+				view.items.add( focusable() );
+				view.items.add( nonFocusable() );
+				view.items.add( focusable() );
+				view.items.add( focusable() );
+
+				// Mock the last item is focused.
+				view.focusTracker.isFocused = true;
+				view.focusTracker.focusedElement = view.items.get( 0 ).element;
+
+				view.keystrokes.press( keyEvtData );
+				sinon.assert.calledOnce( view.items.get( 3 ).focus );
+			} );
+		} );
+
 		it( 'calls _behavior#render()', () => {
 			const view = new ToolbarView( locale );
 			sinon.spy( view._behavior, 'render' );
@@ -387,6 +438,22 @@ describe( 'ToolbarView', () => {
 
 			view.destroy();
 			sinon.assert.calledOnce( view._behavior.destroy );
+		} );
+
+		it( 'should destroy the FocusTracker instance', () => {
+			const destroySpy = sinon.spy( view.focusTracker, 'destroy' );
+
+			view.destroy();
+
+			sinon.assert.calledOnce( destroySpy );
+		} );
+
+		it( 'should destroy the KeystrokeHandler instance', () => {
+			const destroySpy = sinon.spy( view.keystrokes, 'destroy' );
+
+			view.destroy();
+
+			sinon.assert.calledOnce( destroySpy );
 		} );
 	} );
 

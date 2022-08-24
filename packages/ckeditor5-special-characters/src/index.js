@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -7,20 +7,10 @@
  * @module special-characters
  */
 
-import SpecialCharacters from './specialcharacters';
-import SpecialCharactersArrows from './specialcharactersarrows';
-import SpecialCharactersText from './specialcharacterstext';
-import SpecialCharactersMathematical from './specialcharactersmathematical';
-import SpecialCharactersLatin from './specialcharacterslatin';
-import SpecialCharactersEssentials from './specialcharactersessentials';
-import SpecialCharactersCurrency from './specialcharacterscurrency';
-
-export default {
-	SpecialCharacters,
-	SpecialCharactersArrows,
-	SpecialCharactersText,
-	SpecialCharactersMathematical,
-	SpecialCharactersLatin,
-	SpecialCharactersEssentials,
-	SpecialCharactersCurrency
-};
+export { default as SpecialCharacters } from './specialcharacters';
+export { default as SpecialCharactersArrows } from './specialcharactersarrows';
+export { default as SpecialCharactersText } from './specialcharacterstext';
+export { default as SpecialCharactersMathematical } from './specialcharactersmathematical';
+export { default as SpecialCharactersLatin } from './specialcharacterslatin';
+export { default as SpecialCharactersEssentials } from './specialcharactersessentials';
+export { default as SpecialCharactersCurrency } from './specialcharacterscurrency';
